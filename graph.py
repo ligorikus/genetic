@@ -17,7 +17,7 @@ class Graph:
             for j in range(self.count_of_vertices):
                 if i == j:
                     continue
-                if random.random() > 0.5:
+                if random.random() > 0.7:
                     relations.append(j)
             for j in relations:
                 self.graph[i][j] = random.randint(min_weight, max_weight)
