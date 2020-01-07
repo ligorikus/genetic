@@ -35,7 +35,7 @@ def crossbreeding(graph, chromosome1, chromosome2):
                     first_end = r
                     second_start = i
                     found = True
-        if counter > 5:
+        if counter > 10:
             return False
     return normalize(chromosome1[:first_end]+chromosome2[second_start:])
 
@@ -76,14 +76,14 @@ def normalize(chromosome):
 def evolution(graph, init_generation):
     generation = init_generation
     generation_index = 1
-    while True:
+    while generation_index <= 1000:
         print("\n")
         print("Generation index:", generation_index)
         for chromosome in generation:
             print(weight_chromosome(graph, chromosome), chromosome)
         generation = next_generation(graph, generation, 5, len(generation))
         generation_index += 1
-        input()
+        #input()
 
 
 def next_generation(graph, generation, survival_size, offspring_size):
