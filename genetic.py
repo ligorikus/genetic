@@ -36,7 +36,7 @@ def crossbreeding(graph, chromosome1, chromosome2):
                     second_start = i
                     found = True
         if counter > 5:
-            return chromosome1
+            return False
     return normalize(chromosome1[:first_end]+chromosome2[second_start:])
 
 
@@ -77,9 +77,11 @@ def evolution(graph, init_generation):
     generation = init_generation
     generation_index = 1
     while True:
+        print("\n")
+        print("Generation index:", generation_index)
         for chromosome in generation:
-            print(chromosome, weight_chromosome(graph, chromosome))
-        generation = next_generation(graph, generation, 3, len(generation))
+            print(weight_chromosome(graph, chromosome), chromosome)
+        generation = next_generation(graph, generation, 5, len(generation))
         generation_index += 1
         input()
 
@@ -106,9 +108,17 @@ def next_generation(graph, generation, survival_size, offspring_size):
         new_generation.append(survivors[0])
         new_generation.append(survivors[1])
         if offspring_size >= 3:
-            new_generation.append(crossbreeding(graph, survivors[0], survivors[1]))
+            new_chromosome = crossbreeding(graph, survivors[0], survivors[1])
+            if new_chromosome is False:
+                new_generation.append(mutation(graph, survivors[0]))
+            else:
+                new_generation.append(new_chromosome)
         elif offspring_size >= 4:
-            new_generation.append(crossbreeding(graph, survivors[1], survivors[0]))
+            new_chromosome = crossbreeding(graph, survivors[1], survivors[0])
+            if new_chromosome is False:
+                new_generation.append(mutation(graph, survivors[1]))
+            else:
+                new_generation.append(new_chromosome)
         for i in range(offspring_size-len(new_generation)):
             rand = random.random()
             if rand <= 0.25:
@@ -125,7 +135,6 @@ def next_generation(graph, generation, survival_size, offspring_size):
         new_generation.append(survivors[0])
         for i in range(offspring_size-1):
             new_generation.append(mutation(graph, survivors[0]))
-
     else:
         for i in range(survival_size):
             new_generation.append(survivors[i])
@@ -142,6 +151,8 @@ def next_generation(graph, generation, survival_size, offspring_size):
                     next_item = rand_item+1
 
                 chromosome = crossbreeding(graph, survivors[rand_item], survivors[next_item])
+                if chromosome is False:
+                    chromosome = survivors[rand_item]
                 new_generation.append(mutation(graph, chromosome))
             else:
                 if rand_item == 0:
@@ -150,6 +161,8 @@ def next_generation(graph, generation, survival_size, offspring_size):
                     next_item = rand_item-1
 
                 chromosome = crossbreeding(graph, survivors[rand_item], survivors[next_item])
+                if chromosome is False:
+                    chromosome = survivors[rand_item]
                 new_generation.append(mutation(graph, chromosome))
 
     return new_generation

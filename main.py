@@ -3,20 +3,20 @@ import genetic
 import random
 import time
 
-graph = graph_class.Graph(100).create(1, 25, seed=12)
+graph = graph_class.Graph(1000).create(1, 25, seed=12)
 n = 0
 for i in graph:
     print(n, ":", i)
     n += 1
 
-from_elem = 9
-to_elem = 7
+from_elem = 321
+to_elem = 882
 
 # random.seed(time.localtime())
 
 chromosomes = list()
 i = 0
-while i < 5:
+while i < 12:
     new_chromosome = genetic.create_chromosome(graph, from_elem, to_elem)
     is_new = True
     for chromosome in chromosomes:
